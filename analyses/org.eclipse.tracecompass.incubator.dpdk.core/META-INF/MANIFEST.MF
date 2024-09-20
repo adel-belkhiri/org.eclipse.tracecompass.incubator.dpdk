@@ -16,9 +16,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.tracecompass.tmf.ctf.core,
  org.eclipse.tracecompass.analysis.os.linux.core,
  org.eclipse.jdt.annotation;bundle-version="2.2.400",
- com.google.guava
-Export-Package: org.eclipse.tracecompass.incubator.internal.dpdk.core.ethdev.poll.analysis,
- org.eclipse.tracecompass.incubator.internal.dpdk.core.ethdev.stats,
+ com.google.guava,
+ org.eclipse.tracecompass.analysis.lami.core
+Export-Package: 
+ org.eclipse.tracecompass.incubator.internal.dpdk.core.ethdev.rate.analysis,
+ org.eclipse.tracecompass.incubator.internal.dpdk.core.ethdev.spin.analysis,
  org.eclipse.tracecompass.incubator.internal.dpdk.core.ethdev.throughput.analysis,
  org.eclipse.tracecompass.incubator.internal.dpdk.core.lcore.analysis;x-friends:="org.eclipse.tracecompass.incubator.dpdk.core.tests"
 Automatic-Module-Name: org.eclipse.tracecompass.incubator.dpdk.core
@@ -28,5 +30,6 @@ Import-Package: com.google.common.collect,
  org.eclipse.tracecompass.analysis.timing.core.segmentstore,
  org.eclipse.tracecompass.datastore.core.interval,
  org.eclipse.tracecompass.datastore.core.serialization,
+ org.eclipse.tracecompass.internal.provisional.analysis.lami.core.module,
  org.eclipse.tracecompass.segmentstore.core,
  org.eclipse.tracecompass.segmentstore.core.segment.interfaces
