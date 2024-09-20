@@ -21,7 +21,11 @@ public class DpdkEthdevEventLayout {
     /* Event names */
     private static final String ETH_DEV_CONFIGURE = "lib.ethdev.configure"; //$NON-NLS-1$
     private static final String ETH_DEV_RXQ_BURST = "lib.ethdev.rx.burst"; //$NON-NLS-1$
+    private static final String ETH_DEV_RXQ_BURST_EMPTY = "lib.ethdev.rx.burst.empty"; //$NON-NLS-1$
+    private static final String ETH_DEV_RXQ_BURST_NON_EMPTY = "lib.ethdev.rx.burst.nonempty"; //$NON-NLS-1$
     private static final String ETH_DEV_TXQ_BURST = "lib.ethdev.tx.burst"; //$NON-NLS-1$
+    private static final String PROFILE_ETH_DEV_TX_BURST = "lib.ethdev.tx.burst.extended"; //$NON-NLS-1$
+    private static final String PROFILE_ETH_DEV_RX_BURST = "lib.ethdev.rx.burst.extended"; //$NON-NLS-1$
 
     /* Event field names */
     private static final String PORT_ID = "port_id"; //$NON-NLS-1$
@@ -29,6 +33,8 @@ public class DpdkEthdevEventLayout {
     private static final String NB_RX_Q = "nb_rx_q";//$NON-NLS-1$
     private static final String NB_TX_Q = "nb_tx_q";//$NON-NLS-1$
     private static final String NB_RX = "nb_rx"; //$NON-NLS-1$
+    private static final String SIZE = "size"; //$NON-NLS-1$
+    private static final String NB_TX = "nb_tx"; //$NON-NLS-1$
     private static final String NB_PKTS = "nb_pkts"; //$NON-NLS-1$
     private static final String THREAD_NAME = "context.name";  //$NON-NLS-1$
     private static final String CPU_ID = "context.cpu_id";  //$NON-NLS-1$
@@ -58,6 +64,24 @@ public class DpdkEthdevEventLayout {
     }
 
     /**
+     * This event is generated when a burst of packets is received
+     *
+     * @return The event name
+     */
+    public static String eventEthdevRxqBurstEmpty() {
+        return ETH_DEV_RXQ_BURST_EMPTY;
+    }
+
+    /**
+     * This event is generated when a burst of packets is received
+     *
+     * @return The event name
+     */
+    public static String eventEthdevRxqBurstNonEmpty() {
+        return ETH_DEV_RXQ_BURST_NON_EMPTY;
+    }
+
+    /**
      * This event is generated when a burst of packets is sent
      *
      * @return The event name
@@ -66,6 +90,23 @@ public class DpdkEthdevEventLayout {
         return ETH_DEV_TXQ_BURST;
     }
 
+    /**
+     * This event is generated when a burst of packets is received
+     *
+     * @return The event name
+     */
+    public static String eventProfileEthdevRxBurst() {
+        return PROFILE_ETH_DEV_RX_BURST;
+    }
+
+    /**
+     * This event is generated when a burst of packets is sent
+     *
+     * @return The event name
+     */
+    public static String eventProfileEthdevTxBurst() {
+        return PROFILE_ETH_DEV_TX_BURST;
+    }
     // ------------------------------------------------------------------------
     // Event field names
     // ------------------------------------------------------------------------
@@ -106,6 +147,20 @@ public class DpdkEthdevEventLayout {
     }
 
     /**
+     * @return The number of packets received
+     */
+    public static String fieldNbTxPkts() {
+        return NB_TX;
+    }
+
+    /**
+     * @return The number of packets received
+     */
+    public static String fieldSize() {
+        return SIZE;
+    }
+
+    /**
      * @return The name of the thread issuing the DPDK event
      */
     public static String fieldThreadName() {
@@ -122,7 +177,7 @@ public class DpdkEthdevEventLayout {
     /**
      * @return The number of packets transmitted
      */
-    public static String fieldNbTxPkts() {
+    public static String fieldNbPkts() {
         return NB_PKTS;
     }
 

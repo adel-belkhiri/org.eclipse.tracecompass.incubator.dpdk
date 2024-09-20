@@ -32,6 +32,8 @@ public class DpdkEthdevEventHandler implements IDpdkEventHandler {
     private static final String ETH_NICS = Objects.requireNonNull(Attributes.NICS);
     private static final String RX_Q = Objects.requireNonNull(Attributes.RX_Q);
     private static final String TX_Q = Objects.requireNonNull(Attributes.TX_Q);
+    private static final String PKT_NB = Objects.requireNonNull(Attributes.PKT_COUNT);
+    private static final String PKT_SIZE = Objects.requireNonNull(Attributes.PKT_SIZE);
 
 
     DpdkEthdevEventHandler() {
@@ -62,17 +64,20 @@ public class DpdkEthdevEventHandler implements IDpdkEventHandler {
      *            State System builder
      * @param queueQuark
      *            Quark of the the Ethernet device queue
-     * @param nbPkts
+     * @param nbPkt
      *            Number of packets received or transmitted
+     * @param size
+     *            Size of the packets in bytes
      * @param ts
      *            time to use for state change
      */
-    public void updateCounts(ITmfStateSystemBuilder ssb, int queueQuark, Integer nbPkts, long ts) {
-        if (nbPkts <= 0) {
-            return;
-        }
+    public void updateCounts(ITmfStateSystemBuilder ssb, int queueQuark, Integer nbPkt, Integer size, long ts) {
         try {
-            StateSystemBuilderUtils.incrementAttributeLong(ssb, ts, queueQuark, nbPkts);
+            int pktNumberQuark = ssb.getQuarkRelativeAndAdd(queueQuark, PKT_NB);
+            StateSystemBuilderUtils.incrementAttributeLong(ssb, ts, pktNumberQuark, nbPkt);
+
+            int pktSizeQuark = ssb.getQuarkRelativeAndAdd(queueQuark, PKT_SIZE);
+            StateSystemBuilderUtils.incrementAttributeLong(ssb, ts, pktSizeQuark, size);
         } catch (StateValueTypeException e) {
             Activator.getInstance().logWarning(getClass().getName() + ": problem accessing the state of a NIC queue (Quark =" + String.valueOf(queueQuark) + ")"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -100,21 +105,23 @@ public class DpdkEthdevEventHandler implements IDpdkEventHandler {
                 Activator.getInstance().logWarning("The event " + DpdkEthdevEventLayout.eventEthdevConfigure() + " presents a Non-Null RC value"); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
-        } else if (eventName.equals(DpdkEthdevEventLayout.eventEthdevRxqBurst())) {
+        } else if (eventName.equals(DpdkEthdevEventLayout.eventProfileEthdevRxBurst())) { //**
             Integer queueId = event.getContent().getFieldValue(Integer.class, DpdkEthdevEventLayout.fieldQueueId());
             Integer nbRxPkts = event.getContent().getFieldValue(Integer.class, DpdkEthdevEventLayout.fieldNbRxPkts());
+            Integer size = event.getContent().getFieldValue(Integer.class, DpdkEthdevEventLayout.fieldSize());
             int portQuark = ssb.getQuarkAbsoluteAndAdd(ETH_NICS, String.valueOf(portId));
             int rxQsQark = ssb.getQuarkRelativeAndAdd(portQuark, RX_Q);
             int rxQueueQark = ssb.getQuarkRelativeAndAdd(rxQsQark,  Objects.requireNonNull(queueId).toString());
-            updateCounts(ssb, rxQueueQark, Objects.requireNonNull(nbRxPkts), ts);
+            updateCounts(ssb, rxQueueQark, Objects.requireNonNull(nbRxPkts), Objects.requireNonNull(size), ts);
 
-        } else if (eventName.equals(DpdkEthdevEventLayout.eventEthdevTxqBurst())) {
+        }  else if (eventName.equals(DpdkEthdevEventLayout.eventProfileEthdevTxBurst())) { //**
             Integer queueId = event.getContent().getFieldValue(Integer.class, DpdkEthdevEventLayout.fieldQueueId());
             Integer nbTxPkts = event.getContent().getFieldValue(Integer.class, DpdkEthdevEventLayout.fieldNbTxPkts());
+            Integer size = event.getContent().getFieldValue(Integer.class, DpdkEthdevEventLayout.fieldSize());
             int portQuark = ssb.getQuarkAbsoluteAndAdd(ETH_NICS, String.valueOf(portId));
             int txQsQark = ssb.getQuarkRelativeAndAdd(portQuark, TX_Q);
             int txQueueQark = ssb.getQuarkRelativeAndAdd(txQsQark,  Objects.requireNonNull(queueId).toString());
-            updateCounts(ssb, txQueueQark, Objects.requireNonNull(nbTxPkts), ts);
+            updateCounts(ssb, txQueueQark, Objects.requireNonNull(nbTxPkts), Objects.requireNonNull(size), ts);
         }
     }
 }

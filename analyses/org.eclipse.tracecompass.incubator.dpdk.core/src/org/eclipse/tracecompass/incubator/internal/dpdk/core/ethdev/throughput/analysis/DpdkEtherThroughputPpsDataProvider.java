@@ -58,22 +58,22 @@ import com.google.common.collect.Iterables;
  * @author Adel Belkhiri
  * @author Arnaud Fiorini
  */
-public class DpdkEtherThroughputBpsDataProvider extends AbstractTreeCommonXDataProvider<DpdkEthdevAnalysisModule, TmfTreeDataModel>
+public class DpdkEtherThroughputPpsDataProvider extends AbstractTreeCommonXDataProvider<DpdkEthdevAnalysisModule, TmfTreeDataModel>
         implements IOutputStyleProvider {
 
     /**
      * Extension point ID.
      */
-    public static final String ID = "org.eclipse.tracecompass.incubator.dpdk.ethdev.throughput.bps.dataprovider"; //$NON-NLS-1$
+    public static final String ID = "org.eclipse.tracecompass.incubator.dpdk.ethdev.throughput.pps.dataprovider"; //$NON-NLS-1$
 
     /**
-     * Title used to create XY models for the {@link DpdkEtherThroughputBpsDataProvider}.
+     * Title used to create XY models for the {@link DpdkEtherThroughputPpsDataProvider}.
      */
-    protected static final String PROVIDER_TITLE = Objects.requireNonNull("Dpdk Ethernet Device Throughput BPS"); //$NON-NLS-1$
+    protected static final String PROVIDER_TITLE = Objects.requireNonNull("Dpdk Ethernet Device Throughput PPS"); //$NON-NLS-1$
 
     private static final String BASE_STYLE = "base"; //$NON-NLS-1$
     private static final Map<String, OutputElementStyle> STATE_MAP;
-    private static final String BINARY_SPEED_UNIT = "b/s"; //$NON-NLS-1$
+    private static final String BINARY_SPEED_UNIT = "/s"; //$NON-NLS-1$
     private static final String NICS_LABEL = Objects.requireNonNull(Messages.DpdkEthdev_ThroughputDataProvider_NICs);
     private static final String RX_QS_LABEL = Objects.requireNonNull(Messages.DpdkEthdev_ThroughputDataProvider_NIC_RX);
     private static final String TX_QS_LABEL = Objects.requireNonNull(Messages.DpdkEthdev_ThroughputDataProvider_NIC_TX);
@@ -144,7 +144,7 @@ public class DpdkEtherThroughputBpsDataProvider extends AbstractTreeCommonXDataP
              * Linear interpolation to compute the queue throughput between time
              * and the previous time, from the number of packets received or sent at each time.
              */
-            fValues[pos] = (newCount - fPrevCount) * 8 / (SECONDS_PER_NANOSECOND * deltaT);
+            fValues[pos] = (newCount - fPrevCount) / (SECONDS_PER_NANOSECOND * deltaT);
             fPrevCount = newCount;
         }
 
@@ -154,19 +154,19 @@ public class DpdkEtherThroughputBpsDataProvider extends AbstractTreeCommonXDataP
     }
 
     /**
-     * Create an instance of {@link DpdkEtherThroughputBpsDataProvider}. Returns a null
+     * Create an instance of {@link DpdkEtherThroughputPpsDataProvider}. Returns a null
      * instance if the analysis module is not found.
      *
      * @param trace
      *            A trace on which we are interested to fetch a model
-     * @return A {@link DpdkEtherThroughputBpsDataProvider} instance. If analysis module is not
+     * @return A {@link DpdkEtherThroughputPpsDataProvider} instance. If analysis module is not
      *         found, it returns null
      */
-    public static @Nullable DpdkEtherThroughputBpsDataProvider create(ITmfTrace trace) {
+    public static @Nullable DpdkEtherThroughputPpsDataProvider create(ITmfTrace trace) {
         DpdkEthdevAnalysisModule module = TmfTraceUtils.getAnalysisModuleOfClass(trace, DpdkEthdevAnalysisModule.class, DpdkEthdevAnalysisModule.ID);
         if (module != null) {
             module.schedule();
-            return new DpdkEtherThroughputBpsDataProvider(trace, module);
+            return new DpdkEtherThroughputPpsDataProvider(trace, module);
         }
         return null;
     }
@@ -174,7 +174,7 @@ public class DpdkEtherThroughputBpsDataProvider extends AbstractTreeCommonXDataP
     /**
      * Constructor
      */
-    private DpdkEtherThroughputBpsDataProvider(ITmfTrace trace, DpdkEthdevAnalysisModule module) {
+    private DpdkEtherThroughputPpsDataProvider(ITmfTrace trace, DpdkEthdevAnalysisModule module) {
         super(trace, module);
     }
 
@@ -278,7 +278,7 @@ public class DpdkEtherThroughputBpsDataProvider extends AbstractTreeCommonXDataP
     public static double extractCount(int queueQuark, ITmfStateSystem ss, List<ITmfStateInterval> states) {
         double count = 0.0;
         try {
-            int metricQuark = ss.getQuarkRelative(queueQuark, Attributes.PKT_SIZE);
+            int metricQuark = ss.getQuarkRelative(queueQuark, Attributes.PKT_COUNT);
             Object stateValue = states.get(metricQuark).getValue();
             count = (stateValue instanceof Number) ? ((Number) stateValue).doubleValue() : 0.0;
         } catch (AttributeNotFoundException e) {

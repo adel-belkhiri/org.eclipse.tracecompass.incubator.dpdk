@@ -28,5 +28,9 @@ public interface Attributes {
     String RX_Q = "Rx_Q";
     /** Transmission Queues */
     String TX_Q = "Tx_Q";
+    /** Packet Number */
+    String PKT_COUNT = "pkt_count";
+    /** Packet Size */
+    String PKT_SIZE = "pkt_size";
 
 }

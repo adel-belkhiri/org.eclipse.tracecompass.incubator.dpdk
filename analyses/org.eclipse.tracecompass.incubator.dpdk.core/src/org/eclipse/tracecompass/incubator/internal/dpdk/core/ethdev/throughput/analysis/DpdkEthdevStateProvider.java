@@ -69,8 +69,9 @@ public class DpdkEthdevStateProvider extends AbstractDpdkStateProvider {
             ImmutableMap.Builder<String, IDpdkEventHandler> builder = ImmutableMap.builder();
             IDpdkEventHandler ethdevEventHandler = new DpdkEthdevEventHandler();
             builder.put(DpdkEthdevEventLayout.eventEthdevConfigure(), ethdevEventHandler);
-            builder.put(DpdkEthdevEventLayout.eventEthdevRxqBurst(), ethdevEventHandler);
-            builder.put(DpdkEthdevEventLayout.eventEthdevTxqBurst(), ethdevEventHandler);
+            //Profling events
+            builder.put(DpdkEthdevEventLayout.eventProfileEthdevTxBurst(), ethdevEventHandler);
+            builder.put(DpdkEthdevEventLayout.eventProfileEthdevRxBurst(), ethdevEventHandler);
             fEventNames = builder.build();
         }
         if (fEventNames != null) {

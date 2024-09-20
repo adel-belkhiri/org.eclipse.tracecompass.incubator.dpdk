@@ -30,16 +30,16 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 /**
- * Factory to create instances of the {@link DpdkEtherThroughputBpsDataProvider}.
+ * Factory to create instances of the {@link DpdkEtherThroughputPpsDataProvider}.
  *
  * @author Adel Belkhiri
  */
-public class DpdkEtherThroughputBpsDataProviderFactory implements IDataProviderFactory {
+public class DpdkEtherThroughputPpsDataProviderFactory implements IDataProviderFactory {
     private static final Predicate<? super ITmfTrace> PREDICATE = t -> TmfTraceUtils.getAnalysisModuleOfClass(t, DpdkEthdevAnalysisModule.class, DpdkEthdevAnalysisModule.ID) != null;
     private static final IDataProviderDescriptor DESCRIPTOR = new DataProviderDescriptor.Builder()
-            .setId( DpdkEtherThroughputBpsDataProvider.ID)
-            .setName("Dpdk Ethernet Throughput BPS") //$NON-NLS-1$
-            .setDescription("XY chart illustrating the throughput of DPDK Ethernet NIC ports in terms of bits per seconds") //$NON-NLS-1$
+            .setId( DpdkEtherThroughputPpsDataProvider.ID)
+            .setName("Dpdk Ethernet Throughput PPS") //$NON-NLS-1$
+            .setDescription("XY chart illustrating the throughput of DPDK Ethernet NIC ports in terms of PPS") //$NON-NLS-1$
             .setProviderType(ProviderType.TREE_TIME_XY)
             .build();
 
@@ -47,9 +47,9 @@ public class DpdkEtherThroughputBpsDataProviderFactory implements IDataProviderF
     public @Nullable ITmfTreeXYDataProvider<? extends ITmfTreeDataModel> createProvider(ITmfTrace trace) {
         Collection<ITmfTrace> traces = TmfTraceManager.getTraceSet(trace);
         if (traces.size() == 1) {
-            return DpdkEtherThroughputBpsDataProvider.create(trace);
+            return DpdkEtherThroughputPpsDataProvider.create(trace);
         }
-        return TmfTreeXYCompositeDataProvider.create(traces, DpdkEtherThroughputBpsDataProvider.PROVIDER_TITLE, DpdkEtherThroughputBpsDataProvider.ID);
+        return TmfTreeXYCompositeDataProvider.create(traces, DpdkEtherThroughputPpsDataProvider.PROVIDER_TITLE, DpdkEtherThroughputPpsDataProvider.ID);
     }
 
     @Override

@@ -13,23 +13,23 @@
       </output>
       <output
             class="org.eclipse.tracecompass.tmf.ui.analysis.TmfAnalysisViewOutput"
-            id="org.eclipse.tracecompass.incubator.dpdk.ethdev.throughput.view">
+            id="org.eclipse.tracecompass.incubator.internal.dpdk.ui.ethdev.spin.statistics.view">
+         <analysisModuleClass
+               class="org.eclipse.tracecompass.incubator.internal.dpdk.core.ethdev.spin.analysis.DpdkEthdevSpinAnalysisModule">
+         </analysisModuleClass>
+      </output>
+      <output
+            class="org.eclipse.tracecompass.tmf.ui.analysis.TmfAnalysisViewOutput"
+            id="org.eclipse.tracecompass.incubator.dpdk.ethdev.rate.view">
+         <analysisModuleClass
+               class="org.eclipse.tracecompass.incubator.internal.dpdk.core.ethdev.rate.analysis.DpdkEthdevRateAnalysis">
+         </analysisModuleClass>
+      </output>
+      <output
+            class="org.eclipse.tracecompass.tmf.ui.analysis.TmfAnalysisViewOutput"
+            id="org.eclipse.tracecompass.incubator.dpdk.ethdev.throughput.bps.view">
          <analysisModuleClass
                class="org.eclipse.tracecompass.incubator.internal.dpdk.core.ethdev.throughput.analysis.DpdkEthdevAnalysisModule">
-         </analysisModuleClass>
-      </output>
-      <output
-            class="org.eclipse.tracecompass.tmf.ui.analysis.TmfAnalysisViewOutput"
-            id="org.eclipse.tracecompass.incubator.dpdk.ethdev.poll.density.view">
-         <analysisModuleClass
-               class="org.eclipse.tracecompass.incubator.internal.dpdk.core.ethdev.poll.analysis.EtherPollAnalysis">
-         </analysisModuleClass>
-      </output>
-      <output
-            class="org.eclipse.tracecompass.tmf.ui.analysis.TmfAnalysisViewOutput"
-            id="org.eclipse.tracecompass.incubator.dpdk.ethdev.poll.scatter.view">
-         <analysisModuleClass
-               class="org.eclipse.tracecompass.incubator.internal.dpdk.core.ethdev.poll.analysis.EtherPollAnalysis">
          </analysisModuleClass>
       </output>
    </extension>
@@ -49,23 +49,23 @@
       </view>
       <view
             category="org.eclipse.tracecompass.incubator.internal.dpdk.ui.views.category"
+            class="org.eclipse.tracecompass.incubator.internal.dpdk.ui.ethdev.rate.NicQueueRateView"
+            id="org.eclipse.tracecompass.incubator.dpdk.ethdev.rate.view"
+            name="Ethernet Rate View"
+            restorable="true">
+      </view>
+      <view
+            category="org.eclipse.tracecompass.incubator.internal.dpdk.ui.views.category"
+            class="org.eclipse.tracecompass.incubator.internal.dpdk.ui.ethdev.spin.ThreadSpinStatisticsView"
+            id="org.eclipse.tracecompass.incubator.internal.dpdk.ui.ethdev.spin.statistics.view"
+            name="Ethernet PMD Effective Busyness"
+            restorable="true">
+      </view>
+      <view
+            category="org.eclipse.tracecompass.incubator.internal.dpdk.ui.views.category"
             class="org.eclipse.tracecompass.incubator.internal.dpdk.ui.ethdev.throughput.NicQueueThroughputView"
-            id="org.eclipse.tracecompass.incubator.dpdk.ethdev.throughput.view"
-            name="Ethernet Throughput View"
-            restorable="true">
-      </view>
-      <view
-            category="org.eclipse.tracecompass.incubator.internal.dpdk.ui.views.category"
-            class="org.eclipse.tracecompass.incubator.internal.dpdk.ui.ethdev.poll.EtherPollDensityView"
-            id="org.eclipse.tracecompass.incubator.dpdk.ethdev.poll.density.view"
-            name="Ethernet Poll Distribution (Density)"
-            restorable="true">
-      </view>
-      <view
-            category="org.eclipse.tracecompass.incubator.internal.dpdk.ui.views.category"
-            class="org.eclipse.tracecompass.incubator.internal.dpdk.ui.ethdev.poll.EtherPollScatterView"
-            id="org.eclipse.tracecompass.incubator.dpdk.ethdev.poll.scatter.view"
-            name="Ethernet Poll Distribution (Scatter)"
+            id="org.eclipse.tracecompass.incubator.dpdk.ethdev.throughput.bps.view"
+            name="Ethernet Throughput View (bps)"
             restorable="true">
       </view>
    </extension>
